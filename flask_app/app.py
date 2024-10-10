@@ -44,9 +44,7 @@ def generate_coupons():
     output_date = request.form.get('output_date', datetime.now().strftime("%Y-%m-%d"))
 
     # Generate coupons CSV
-    output_file = f"coupons_{output_date}.csv"
-    output_path = os.path.join(app.config['UPLOAD_FOLDER'], output_file)
-
+    coupons_data = []
     with open(eligible_courses_path, newline='') as f:
         reader = csv.DictReader(f)
         courses = [row for row in reader]
@@ -57,22 +55,42 @@ def generate_coupons():
             reader = csv.DictReader(f)
             previous_coupons = {row['course_id']: row['coupon_type'] for row in reader}
 
-    with open(output_path, mode='w', newline='') as file:
-        writer = csv.writer(file)
+    for course in courses:
+        if int(course['coupons_remaining']) > 0:
+            course_id = course['course_id']
+            coupon_type = previous_coupons.get(course_id, 'best_price')
+            coupon_code = generate_unique_coupon_code()
+            start_date = output_date
+            start_time = "00:00"
+            custom_price = '' if coupon_type != 'custom_price' else course['min_custom_price']
+
+            coupons_data.append([course_id, coupon_type, coupon_code, start_date, start_time, custom_price])
+
+    # Render the CSV as an editable table instead of downloading
+    return render_template('edit_coupons.html', coupons_data=coupons_data)
+
+# Route to handle editing and saving the coupons CSV
+@app.route('/save-coupons', methods=['POST'])
+def save_coupons():
+    updated_rows = []
+    for i in range(len(request.form.getlist('course_id'))):
+        updated_rows.append([
+            request.form.getlist('course_id')[i],
+            request.form.getlist('coupon_type')[i],
+            request.form.getlist('coupon_code')[i],
+            request.form.getlist('start_date')[i],
+            request.form.getlist('start_time')[i],
+            request.form.getlist('custom_price')[i]
+        ])
+
+    # Save the updated CSV file
+    output_file = os.path.join(app.config['UPLOAD_FOLDER'], f"edited_coupons_{datetime.now().strftime('%Y-%m-%d')}.csv")
+    with open(output_file, 'w', newline='') as f:
+        writer = csv.writer(f)
         writer.writerow(['course_id', 'coupon_type', 'coupon_code', 'start_date', 'start_time', 'custom_price'])
+        writer.writerows(updated_rows)
 
-        for course in courses:
-            if int(course['coupons_remaining']) > 0:
-                course_id = course['course_id']
-                coupon_type = previous_coupons.get(course_id, 'best_price')
-                coupon_code = generate_unique_coupon_code()
-                start_date = output_date
-                start_time = "00:00"
-                custom_price = '' if coupon_type != 'custom_price' else course['min_custom_price']
-
-                writer.writerow([course_id, coupon_type, coupon_code, start_date, start_time, custom_price])
-
-    return send_file(output_path, as_attachment=True)
+    return send_file(output_file, as_attachment=True)
 
 # Route to upload and generate the LinkedIn post using a custom post template
 @app.route('/generate-post', methods=['POST'])

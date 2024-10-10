@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Coupons</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit Generated Coupons CSV</h1>
+    <form action="/save-coupons" method="POST">
+        <table>
+            <tr>
+                <th>Course ID</th>
+                <th>Coupon Type</th>
+                <th>Coupon Code</th>
+                <th>Start Date</th>
+                <th>Start Time</th>
+                <th>Custom Price</th>
+            </tr>
+            {% for row in coupons_data %}
+            <tr>
+                <td><input type="text" name="course_id" value="{{ row[0] }}"></td>
+                <td><input type="text" name="coupon_type" value="{{ row[1] }}"></td>
+                <td><input type="text" name="coupon_code" value="{{ row[2] }}"></td>
+                <td><input type="text" name="start_date" value="{{ row[3] }}"></td>
+                <td><input type="text" name="start_time" value="{{ row[4] }}"></td>
+                <td><input type="text" name="custom_price" value="{{ row[5] }}"></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br>
+        <input type="submit" value="Save and Download Updated Coupons CSV">
+    </form>
+</body>
+</html>
