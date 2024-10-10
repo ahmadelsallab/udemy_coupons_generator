@@ -73,14 +73,26 @@ def generate_coupons():
 @app.route('/save-coupons', methods=['POST'])
 def save_coupons():
     updated_rows = []
-    for i in range(len(request.form.getlist('course_id'))):
+
+    # Get the form data
+    course_ids = request.form.getlist('course_id')
+    coupon_types = request.form.getlist('coupon_type')
+    coupon_codes = request.form.getlist('coupon_code')
+    start_dates = request.form.getlist('start_date')
+    start_times = request.form.getlist('start_time')
+    custom_prices = request.form.getlist('custom_price')
+
+    # Loop through the form data and handle custom_price properly
+    for i in range(len(course_ids)):
+        custom_price = custom_prices[i] if i < len(custom_prices) and coupon_types[i] == 'custom_price' else ''
+        
         updated_rows.append([
-            request.form.getlist('course_id')[i],
-            request.form.getlist('coupon_type')[i],
-            request.form.getlist('coupon_code')[i],
-            request.form.getlist('start_date')[i],
-            request.form.getlist('start_time')[i],
-            request.form.getlist('custom_price')[i]
+            course_ids[i],
+            coupon_types[i],
+            coupon_codes[i],
+            start_dates[i],
+            start_times[i],
+            custom_price
         ])
 
     # Save the updated CSV file
@@ -91,6 +103,7 @@ def save_coupons():
         writer.writerows(updated_rows)
 
     return send_file(output_file, as_attachment=True)
+
 
 # Route to upload and generate the LinkedIn post using a custom post template
 @app.route('/generate-post', methods=['POST'])

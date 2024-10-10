@@ -11,6 +11,17 @@
             padding: 10px;
         }
     </style>
+    <script>
+        function toggleCustomPrice(selectElement, index) {
+            const customPriceField = document.getElementById('custom_price_' + index);
+            if (selectElement.value === 'custom_price') {
+                customPriceField.disabled = false;
+            } else {
+                customPriceField.disabled = true;
+                customPriceField.value = '';  // Clear the value when disabled
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Edit Generated Coupons CSV</h1>
@@ -26,12 +37,30 @@
             </tr>
             {% for row in coupons_data %}
             <tr>
-                <td><input type="text" name="course_id" value="{{ row[0] }}"></td>
-                <td><input type="text" name="coupon_type" value="{{ row[1] }}"></td>
-                <td><input type="text" name="coupon_code" value="{{ row[2] }}"></td>
+                <!-- Course ID: non-editable -->
+                <td><input type="text" name="course_id" value="{{ row[0] }}" readonly></td>
+                
+                <!-- Coupon Type: dropdown with options -->
+                <td>
+                    <select name="coupon_type" onchange="toggleCustomPrice(this, {{ loop.index0 }})">
+                        <option value="best_price" {% if row[1] == 'best_price' %} selected {% endif %}>best_price</option>
+                        <option value="custom_price" {% if row[1] == 'custom_price' %} selected {% endif %}>custom_price</option>
+                        <option value="free_targeted" {% if row[1] == 'free_targeted' %} selected {% endif %}>free_targeted</option>
+                        <option value="free_open" {% if row[1] == 'free_open' %} selected {% endif %}>free_open</option>
+                    </select>
+                </td>
+
+                <!-- Coupon Code: non-editable -->
+                <td><input type="text" name="coupon_code" value="{{ row[2] }}" readonly></td>
+
+                <!-- Start Date: editable -->
                 <td><input type="text" name="start_date" value="{{ row[3] }}"></td>
+                
+                <!-- Start Time: editable -->
                 <td><input type="text" name="start_time" value="{{ row[4] }}"></td>
-                <td><input type="text" name="custom_price" value="{{ row[5] }}"></td>
+
+                <!-- Custom Price: editable only if Coupon Type is custom_price -->
+                <td><input type="text" id="custom_price_{{ loop.index0 }}" name="custom_price" value="{{ row[5] }}" {% if row[1] != 'custom_price' %} disabled {% endif %}></td>
             </tr>
             {% endfor %}
         </table>
