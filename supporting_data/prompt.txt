@@ -1,0 +1,182 @@
+# Introduction
+I have set of courses on Udemy. 
+I market to them via free and discounted coupons every week.
+I post for them on LinkedIn and share on my personal page.
+
+Currently, I manually create the coupons, either free or discounted or just a course link. If a user enrols through my course link it is counted as personal marketing and have higher revenue.
+Then I fill in the course coupons into a post template.
+
+# Task
+I want to automate that process. 
+Udemy offers a way to upload bulk coupons requests for multiple courses in csv.
+It gives a csv for all eligible courses that I created.
+Then I can download the created coupons.
+
+I want to automate the following:
+1- Preparation of coupons.csv for upload to Udemy. This shall take as input the list of eligible courses and prepare a csv ready for me to fill in the type of coupon, the date...etc.
+2- Generate post.txt for me, which includes an intro, the courses with coupons and a closure. 
+
+I want two command line scripts for that.
+
+# Script 1: coupons.py
+## Input:
+- eligible_courses: this is a csv has the following format:
+```
+"course_id","course_name","currency","best_price_value","min_custom_price","max_custom_price","coupons_remaining", "referral_url"
+6199369,"Advaced Practical GenAI","USD",9.99,12.99,19.99,2,"https://www.udemy.com/course/practical-genai-part-3-arabic-advaced-genai/?referralCode=7B98BE65785E74E05B62"
+6199297,"Multimodal GenAI RAG Apps","USD",9.99,12.99,19.99,2,"https://www.udemy.com/course/practical-genai-part-2-arabic-rag/?referralCode=C22930F0F33A328FF6ED"
+5587658,"Basics of Practical GenAI","USD",9.99,12.99,19.99,2,"https://www.udemy.com/course/practical-genai-part-1-genai-basics/?referralCode=02DCB331E2B73D2940A1"
+5312986,"Reinforcement Learning (English): Master the Art of RL","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/reinforcement-learning-english/?referralCode=3400753CB4006317933F"
+5273846,"Generative AI (English Version): Unleashing Next-Gen AI","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/generative-ai-english-version-unleashing-next-gen-ai/?referralCode=3DBEBB24A00BE13CF63B"
+5256918,"Generative AI: Learn about the next AI frontier","USD",10.99,15.99,29.99,3,"https://www.udemy.com/course/generative-ai-ar/?referralCode=E23B8A9D95BA98BF3A79"
+5113844,"Transformers in Computer Vision - English version","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/transformers-in-computer-vision-english-version/?referralCode=093F437E905A0F0EA6DD"
+5048136,"Reinforcement Learning","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/reinforcement-learning-coursat/?referralCode=56E3E70A579292427879"
+4948464,"Transformers in Computer Vision","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/transformers-in-computer-vision/?referralCode=3B6D7A37B986019EA2B2"
+4833004,"Deployment of Machine Learning Models","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/deployment-of-machine-learning-models-l/?referralCode=371058AB5DFFCC629961"
+4663084,"Deep Learning for Natural Language Processing","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/deep-learning-for-computer-vision/?referralCode=2B0B1CBC62996305FBEB"
+4661416,"Deep Learning for Computer Vision","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/deep-learning-for-computer-vision/?referralCode=2B0B1CBC62996305FBEB"
+4644516,"Practical Machine Learning for Data Scientists","EGP",249.99,299.99,1699.99,3,"https://www.udemy.com/course/practical-machine-learning-for-data-scientists/?referralCode=3822B15171FBE3A6ECE6"
+
+```
+- date: for the day of generation
+
+- previous_coupons (optional): this is a csv for sample coupons from previous weeks.
+
+## Output:
+- coupons_<Date>.csv: a csv with date in the name for the bulk coupons request to upload to upload to udemy.
+```
+course_id,coupon_type,coupon_code,start_date,start_time,custom_price
+```
+course_id: from the eligible_courses.csv
+
+coupon_type: get from previous_coupons.csv if exists.
+possible values for coupon_type are:
+best_price
+custom_price
+free_targeted
+free_open
+
+coupon_code: The unique code you share with others. Must between 6 and 20 characters and can only contain alphanumeric characters (A-Z, 0-9), periods ("."), dashes ("-") or underscores ("_").
+
+
+start_date: same as Date
+start_time: 00:00
+
+custom_price: Only relevant for custom price coupons. Leave empty for me to fill.
+
+Generate a coupon for the course only if coupons_remaining is greater than 0.
+
+# Script 2: post.py
+## Input:
+- active_coupons: this is a csv for the actual active coupons
+If has the following header:
+```
+"course_id","course_name","coupon_type","maximum_redemptions","coupon_code","start_date_time","end_date_time","currency","discount_price","course_coupon_url"
+```
+- date: for the day of generation
+
+- post_template: the post template
+
+- eligible_courses: this has the following format:
+```
+"course_id","course_name","currency","best_price_value","min_custom_price","max_custom_price","coupons_remaining", "referral_url"
+6199369,"Advaced Practical GenAI","USD",9.99,12.99,19.99,2,"https://www.udemy.com/course/practical-genai-part-3-arabic-advaced-genai/?referralCode=7B98BE65785E74E05B62"
+6199297,"Multimodal GenAI RAG Apps","USD",9.99,12.99,19.99,2,"https://www.udemy.com/course/practical-genai-part-2-arabic-rag/?referralCode=C22930F0F33A328FF6ED"
+5587658,"Basics of Practical GenAI","USD",9.99,12.99,19.99,2,"https://www.udemy.com/course/practical-genai-part-1-genai-basics/?referralCode=02DCB331E2B73D2940A1"
+5312986,"Reinforcement Learning (English): Master the Art of RL","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/reinforcement-learning-english/?referralCode=3400753CB4006317933F"
+5273846,"Generative AI (English Version): Unleashing Next-Gen AI","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/generative-ai-english-version-unleashing-next-gen-ai/?referralCode=3DBEBB24A00BE13CF63B"
+5256918,"Generative AI: Learn about the next AI frontier","USD",10.99,15.99,29.99,3,"https://www.udemy.com/course/generative-ai-ar/?referralCode=E23B8A9D95BA98BF3A79"
+5113844,"Transformers in Computer Vision - English version","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/transformers-in-computer-vision-english-version/?referralCode=093F437E905A0F0EA6DD"
+5048136,"Reinforcement Learning","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/reinforcement-learning-coursat/?referralCode=56E3E70A579292427879"
+4948464,"Transformers in Computer Vision","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/transformers-in-computer-vision/?referralCode=3B6D7A37B986019EA2B2"
+4833004,"Deployment of Machine Learning Models","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/deployment-of-machine-learning-models-l/?referralCode=371058AB5DFFCC629961"
+4663084,"Deep Learning for Natural Language Processing","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/deep-learning-for-computer-vision/?referralCode=2B0B1CBC62996305FBEB"
+4661416,"Deep Learning for Computer Vision","USD",9.99,12.99,29.99,3,"https://www.udemy.com/course/deep-learning-for-computer-vision/?referralCode=2B0B1CBC62996305FBEB"
+4644516,"Practical Machine Learning for Data Scientists","EGP",249.99,299.99,1699.99,3,"https://www.udemy.com/course/practical-machine-learning-for-data-scientists/?referralCode=3822B15171FBE3A6ECE6"
+
+```
+## Output:
+Generate a post_<date>.txt that has the following intro:
+'''
+**FREE** and Discounted coupons for coursat.ai offerings on Udemy. Valid for 5 days
+'''
+
+Then generate each course_name with its course_coupon_url below.
+Example
+'''
+Basics of Practical GenAI:
+https://www.udemy.com/course/practical-genai-part-1-genai-basics/?couponCode=4DBB9FBB859C28D091B2
+
+Multimodal GenAI RAG Apps:
+https://www.udemy.com/course/practical-genai-part-2-arabic-rag/?couponCode=05FE6BF0C25A7EDE6C1C
+
+Advanced Practical GenAI:
+https://www.udemy.com/course/practical-genai-part-3-arabic-advaced-genai/?couponCode=8F8CB467FA078D9AD0C4
+
+Generative AI (Arabic):
+
+https://www.udemy.com/course/generative-ai-ar/?referralCode=E23B8A9D95BA98BF3A79
+
+
+Generative AI (English):
+
+https://www.udemy.com/course/generative-ai-english-version-unleashing-next-gen-ai/?referralCode=3DBEBB24A00BE13CF63B
+
+Reinforcement Learning (Arabic):
+
+https://www.udemy.com/course/reinforcement-learning-coursat/?referralCode=56E3E70A579292427879
+
+Reinforcement Learning (English):
+
+https://www.udemy.com/course/reinforcement-learning-english/?referralCode=3400753CB4006317933F
+
+Transformers in Computer Vision (English):
+
+https://www.udemy.com/course/transformers-in-computer-vision-english-version/?referralCode=093F437E905A0F0EA6DD
+
+
+Transformers in Computer Vision (Arabic):
+
+https://www.udemy.com/course/transformers-in-computer-vision/?referralCode=3B6D7A37B986019EA2B2
+
+
+Deployment of Machine Learning models:
+
+https://www.udemy.com/course/deployment-of-machine-learning-models-l/?referralCode=371058AB5DFFCC629961
+
+Deep Learning for NLP:
+
+https://www.udemy.com/course/deep-learning-for-natural-language-processing/?referralCode=827DF13B8D73E0E25CE5
+
+Deep Learning for Computer Vision:
+
+https://www.udemy.com/course/deep-learning-for-computer-vision/?referralCode=2B0B1CBC62996305FBEB
+
+
+Practical Machine Learning for Data Scientists:
+
+https://www.udemy.com/course/practical-machine-learning-for-data-scientists/?referralCode=3822B15171FBE3A6ECE6
+
+'''
+
+Then a closure:
+'''
+#ai #machinelearning #computervision #deeplearning #nlp #transformers #generativeai #coursat.ai #datascientists #learning 
+'''
+
+
+Use the passed post_template to get the structure.
+Use string formatting to substitute for the courses and coupons urls.
+
+And give me sample post_template based on what I gave you.
+
+If a course has no entry in active_coupons, look for it in the eligible_courses and add its referral_url
+
+
+Give me the 2 scripts with input args as named args. 
+
+
+
+
+APP:
+Now I want to convert this into flask app. The app must enable me to create and edit the bulk coupons csv, and generate a post from the active coupons csv that I upload.

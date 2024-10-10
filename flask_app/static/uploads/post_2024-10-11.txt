@@ -1,0 +1,43 @@
+Discounted coupons for coursat.ai offerings on Udemy. Valid for 5 days
+
+Advaced Practical GenAI:
+https://www.udemy.com/course/practical-genai-part-3-arabic-advaced-genai/?couponCode=9742821B09ED465F987A
+
+Multimodal GenAI RAG Apps:
+https://www.udemy.com/course/practical-genai-part-2-arabic-rag/?couponCode=535E334CFA974DF78C0D
+
+Basics of Practical GenAI:
+https://www.udemy.com/course/practical-genai-part-1-genai-basics/?couponCode=86190C4F66E6437EA934
+
+Reinforcement Learning (English): Master the Art of RL:
+https://www.udemy.com/course/reinforcement-learning-english/?couponCode=96FA2D6FF3FC43D2BD12
+
+Generative AI (English Version): Unleashing Next-Gen AI:
+https://www.udemy.com/course/generative-ai-english-version-unleashing-next-gen-ai/?couponCode=F6A8D2C428EB4BCBA42B
+
+Generative AI: Learn about the next AI frontier:
+https://www.udemy.com/course/generative-ai-ar/?couponCode=7D656D0F22854395BC52
+
+Transformers in Computer Vision - English version:
+https://www.udemy.com/course/transformers-in-computer-vision-english-version/?couponCode=D328473372044043ABEE
+
+Reinforcement Learning:
+https://www.udemy.com/course/reinforcement-learning-coursat/?couponCode=2CE7124203A247EBAA77
+
+Transformers in Computer Vision:
+https://www.udemy.com/course/transformers-in-computer-vision/?couponCode=E461CFF49AAF41288759
+
+Deployment of Machine Learning Models:
+https://www.udemy.com/course/deployment-of-machine-learning-models-l/?couponCode=BA7658820C5F42C49E11
+
+Deep Learning for Natural Language Processing:
+https://www.udemy.com/course/deep-learning-for-natural-language-processing/?couponCode=2F7DEAFD9C524353BE43
+
+Deep Learning for Computer Vision:
+https://www.udemy.com/course/deep-learning-for-computer-vision/?couponCode=3EF310C39FAF494D9398
+
+Practical Machine Learning for Data Scientists:
+https://www.udemy.com/course/practical-machine-learning-for-data-scientists/?couponCode=58B128E58BA74F3F882C
+
+
+#ai #machinelearning #computervision #deeplearning #nlp #transformers #generativeai #coursat.ai #datascientists #learning 

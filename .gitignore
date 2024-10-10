@@ -167,10 +167,11 @@ desktop.ini
 *.data
 *.mp3
 *.mp4
-*.txt
 
 
 
 **/data/
 **/data/**
 !data/
+
+*.csv
