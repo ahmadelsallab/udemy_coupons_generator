@@ -1,6 +1,6 @@
-Flask==2.3.2
+Flask==2.2.5
 python-dateutil==2.8.2
 uuid==1.30
-streamlit==1.24.0
-pandas==2.0.0
+streamlit==1.39.0
+pandas==2.1.4
 
