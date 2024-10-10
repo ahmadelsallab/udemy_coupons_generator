@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coupon Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Generate Udemy Coupons</h1>
+
+    <h2>Steps for Multiple Coupon Generation in Udemy</h2>
+    <p>
+        Learn how to perform multiple coupon generation on Udemy:
+        <a href="https://www.udemy.com/instructor/multiple-coupons-creation/" target="_blank">Creating and Managing Coupons</a>.
+    </p>
+
+    <form action="/generate-coupons" method="POST" enctype="multipart/form-data">
+        <label for="eligible_courses">Upload Eligible Courses CSV 
+            (<a href="https://www.udemy.com/api-2.0/discounts/multiple-coupons-creation/export-instructor-courses/" target="_blank">Get from Udemy</a>):
+        </label>
+        <input type="file" name="eligible_courses" required>
+        <br>
+        <label for="previous_coupons">Upload Previous Coupons CSV (optional):</label>
+        <input type="file" name="previous_coupons">
+        <br>
+        <label for="output_date">Coupon Start Date:</label>
+        <input type="date" name="output_date" required>
+        <br>
+        <input type="submit" value="Generate Coupons CSV">
+    </form>
+
+    <h1>Generate LinkedIn Post</h1>
+
+    <form action="/generate-post" method="POST" enctype="multipart/form-data">
+        <label for="active_coupons">Upload Active Coupons CSV 
+            (<a href="https://www.udemy.com/api-2.0/discounts/multiple-coupons-creation/export-instructor-coupons/" target="_blank">Get from Udemy</a>):
+        </label>
+        <input type="file" name="active_coupons" required>
+        <br>
+        <label for="eligible_courses">Upload Eligible Courses CSV (optional) 
+            (<a href="https://www.udemy.com/api-2.0/discounts/multiple-coupons-creation/export-instructor-courses/" target="_blank">Get from Udemy</a>):
+        </label>
+        <input type="file" name="eligible_courses">
+        <br>
+        <label for="post_template">Upload Post Template:</label>
+        <input type="file" name="post_template" required>
+        <br>
+        <input type="submit" value="Generate LinkedIn Post">
+    </form>
+</body>
+</html>
