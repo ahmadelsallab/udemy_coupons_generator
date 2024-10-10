@@ -69,46 +69,102 @@ pip install -r requirements.txt
 
     - The LinkedIn post will be saved in a .txt file (`post_<date>.txt`), ready for you to copy and paste into your LinkedIn account.
 
-2. Flask Web Application
-    ## Prerequisites:        
-    - Install the required dependencies for Flask.
+# Flask Web Application
+
+## Prerequisites:        
+- Install the required dependencies for Flask.
+    ```bash
+    pip install -r requirements.txt
+    ```
+## Steps to Generate Bulk Coupons via the App:
+
+1. Start the Flask App:
+    - Run the Flask app using the following command:
         ```bash
-        pip install -r requirements.txt
+        python app.py
         ```
-    ## Steps to Generate Bulk Coupons via the App:
-    
-    1. Start the Flask App:
-        - Run the Flask app using the following command:
-            ```bash
-            python app.py
-            ```
-        - Open your browser and go to http://127.0.0.1:5000/.
-    
-    2. Generate Coupons:
+    - Open your browser and go to http://127.0.0.1:5000/.
 
-        - On the homepage, upload the eligible_courses.csv (downloaded from [Udemy's API](https://www.udemy.com/api-2.0/discounts/multiple-coupons-creation/export-instructor-courses/)) and optionally, the `previous_coupons.csv`.
-        - Click Generate Coupons CSV to generate the initial coupons based on the uploaded data.
-        - The app will then display the generated coupons in a table where you can review and modify the details.
-    
-    3. Edit Coupons:
+2. Generate Coupons:
 
-        - Modify coupon types, start dates, and custom prices directly in the web interface.
-        - The fields for Course ID and Coupon Code will be non-editable.
-        - Custom Price will only be editable if the coupon type is set to custom_price.
-        - Click Save and Download Updated Coupons CSV to download the modified coupons.
+    - On the homepage, upload the eligible_courses.csv (downloaded from [Udemy's API](https://www.udemy.com/api-2.0/discounts/multiple-coupons-creation/export-instructor-courses/)) and optionally, the `previous_coupons.csv`.
+    - Click Generate Coupons CSV to generate the initial coupons based on the uploaded data.
+    - The app will then display the generated coupons in a table where you can review and modify the details.
 
-    4. Upload Coupons to Udemy:
+3. Edit Coupons:
 
-        - After downloading the updated coupons.csv, navigate to [Udemy's Bulk Coupons Creation page)](https://www.udemy.com/instructor/multiple-coupons-creation/) to upload your updated CSV and generate the active coupons.
+    - Modify coupon types, start dates, and custom prices directly in the web interface.
+    - The fields for Course ID and Coupon Code will be non-editable.
+    - Custom Price will only be editable if the coupon type is set to custom_price.
+    - Click Save and Download Updated Coupons CSV to download the modified coupons.
 
-    5. Download Active Coupons from Udemy:
+4. Upload Coupons to Udemy:
 
-        - After the coupons are generated, download the active coupons using [Udemy's Export Instructor Coupons API](https://www.udemy.com/api-2.0/discounts/multiple-coupons-creation/export-instructor-coupons/) and save the file as active_coupons.csv.
+    - After downloading the updated coupons.csv, navigate to [Udemy's Bulk Coupons Creation page)](https://www.udemy.com/instructor/multiple-coupons-creation/) to upload your updated CSV and generate the active coupons.
 
-    6. Generate LinkedIn Post:
+5. Download Active Coupons from Udemy:
 
-        - In the Generate LinkedIn Post section of the app, upload the `active_coupons.csv`, `eligible_courses.csv`, and the `post_template.txt`.
-        - Click Generate LinkedIn Post to download a .txt file with the formatted post, which includes course names and coupon links.
+    - After the coupons are generated, download the active coupons using [Udemy's Export Instructor Coupons API](https://www.udemy.com/api-2.0/discounts/multiple-coupons-creation/export-instructor-coupons/) and save the file as active_coupons.csv.
+
+6. Generate LinkedIn Post:
+
+    - In the Generate LinkedIn Post section of the app, upload the `active_coupons.csv`, `eligible_courses.csv`, and the `post_template.txt`.
+    - Click Generate LinkedIn Post to download a .txt file with the formatted post, which includes course names and coupon links.
+
+# Streamlit App
+
+## Step 1: Install Streamlit and Dependencies
+
+Ensure you have installed Streamlit and the necessary libraries. Run the following command to install the required dependencies:
+
+```bash
+pip install streamlit pandas uuid
+```
+
+## Step 2: Run the Streamlit App
+
+To run the Streamlit app, use the following command in your terminal:
+
+streamlit run app.py
+
+This will start the app, and you can open it in your browser using the URL provided (usually `http://localhost:8501/`).
+
+## Step 3: Use the App
+
+### Generate Coupons CSV
+
+1. **Upload Eligible Courses CSV**: 
+   - Download the `eligible_courses.csv` from [Udemy's API](https://www.udemy.com/api-2.0/discounts/multiple-coupons-creation/export-instructor-courses/) and upload it using the file uploader.
+
+2. **(Optional) Upload Previous Coupons CSV**: 
+   - Upload the `previous_coupons.csv` if available (optional).
+
+3. **Select the Coupon Start Date**: 
+   - Choose the start date for the coupon generation.
+
+4. **Generate Coupons CSV**: 
+   - The app will display a table with the generated coupons. You can review and modify the coupon types, custom prices, and other details directly in the app.
+
+5. **Download Coupons CSV**: 
+   - After making any changes, click the **Download Coupons CSV** button to download the updated coupons file.
+
+### Generate LinkedIn Post
+
+1. **Upload Active Coupons CSV**: 
+   - Download the `active_coupons.csv` from [Udemy's API](https://www.udemy.com/api-2.0/discounts/multiple-coupons-creation/export-instructor-coupons/) and upload it.
+
+2. **Upload Post Template**: 
+   - Upload a `post_template.txt` file that will be used to generate the LinkedIn post. This text file should include a placeholder for the course and coupon details.
+
+3. **Generate LinkedIn Post**: 
+   - The app will generate the LinkedIn post content by inserting the coupon URLs and course names into the template.
+   
+4. **Download LinkedIn Post**: 
+   - After reviewing the generated LinkedIn post, click the **Download LinkedIn Post** button to download the post as a `.txt` file.
+
+---
+
+By following these steps, you can use the Streamlit app to easily generate and manage Udemy coupons and create LinkedIn posts to promote your courses.
 
 # CSV Files Overview:
 - `eligible_courses.csv`: This file is downloaded from Udemy's [Multiple Coupons Creation API](https://www.udemy.com/api-2.0/discounts/multiple-coupons-creation/export-instructor-courses/). It contains details about your eligible courses, such as course ID, course name, currency, price, etc.
