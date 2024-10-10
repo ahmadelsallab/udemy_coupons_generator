@@ -70,6 +70,11 @@ if 'coupons_df' not in st.session_state:
 if eligible_courses_file:
     # Step 4: Generate Coupons CSV
     st.subheader("Step 4: Generate and Edit Coupons CSV")
+    st.markdown(
+    """
+    - coupon_type: best_price, free_open, free_targeted, custom_price, best_price
+    """
+    )   
 
     eligible_courses_df = pd.read_csv(eligible_courses_file)
     
