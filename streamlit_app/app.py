@@ -90,35 +90,40 @@ if eligible_courses_file:
     if st.session_state['coupons_df'] is not None:
         st.session_state['coupons_df']['start_date'] = output_date
     
+    display_df = st.session_state['coupons_df']
     # If the DataFrame hasn't been generated yet, generate it and store it in session state
     if st.session_state['coupons_df'] is None:
-        st.session_state['coupons_df'] = generate_coupons(eligible_courses_df, previous_coupons_df, output_date)
+        display_df = generate_coupons(eligible_courses_df, previous_coupons_df, output_date)
 
-    # Fix course_id formatting in coupons_df
-    st.session_state['coupons_df']['course_id'] = st.session_state['coupons_df']['course_id'].astype(str)
 
-    # Create a copy of coupons_df for display and include course_name from eligible_courses_df
-    display_df = st.session_state['coupons_df'].copy()
-    display_df = display_df.merge(eligible_courses_df[['course_id', 'course_name']], on='course_id', how='left')
+    if not display_df.empty:
+        # Create a copy of coupons_df for display and include course_name from eligible_courses_df
+        display_df = display_df.astype(str)
+        st.session_state['coupons_df']  = display_df.copy()
 
-    # Reorder the columns to place 'course_name' immediately after 'course_id'
-    columns_order = ['course_id', 'course_name'] + [col for col in display_df.columns if col not in ['course_id', 'course_name']]
-    display_df = display_df[columns_order]
 
-    # Display editable coupons table with course_name using st.data_editor
-    edited_display_df = st.data_editor(display_df)
+        display_df = display_df.merge(eligible_courses_df[['course_id', 'course_name']], on='course_id', how='left')
 
-    # Remove course_name from the edited DataFrame before saving to session state
-    st.session_state['coupons_df'] = edited_display_df.drop(columns=['course_name'])
+        # Reorder the columns to place 'course_name' immediately after 'course_id'
+        columns_order = ['course_id', 'course_name'] + [col for col in display_df.columns if col not in ['course_id', 'course_name']]
+        display_df = display_df[columns_order]
 
-    # Step 5: Save Coupons CSV
-    st.subheader("Step 5: Download Edited Coupons CSV")
+        # Display editable coupons table with course_name using st.data_editor
+        edited_display_df = st.data_editor(display_df)
 
-    def convert_df_to_csv(df):
-        return df.to_csv(index=False).encode('utf-8')
+        # Remove course_name from the edited DataFrame before saving to session state
+        st.session_state['coupons_df'] = edited_display_df.drop(columns=['course_name'])
 
-    csv = convert_df_to_csv(st.session_state['coupons_df'])
-    st.download_button(label="Download Coupons CSV", data=csv, file_name=f"coupons_{output_date}.csv", mime="text/csv")
+        # Step 5: Save Coupons CSV
+        st.subheader("Step 5: Download Edited Coupons CSV")
+
+        def convert_df_to_csv(df):
+            return df.to_csv(index=False).encode('utf-8')
+
+        csv = convert_df_to_csv(st.session_state['coupons_df'])
+        st.download_button(label="Download Coupons CSV", data=csv, file_name=f"coupons_{output_date}.csv", mime="text/csv")
+    else:
+        st.warning("No eligible courses to edit")
 
 st.markdown(
     """
